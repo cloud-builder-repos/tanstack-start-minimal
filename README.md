@@ -18,8 +18,8 @@ pnpm dev        # http://localhost:3000
 | Command | Purpose |
 |---|---|
 | `pnpm dev` | Local dev (Vite + Nitro) |
-| `pnpm build` | Production build (default `node-server` preset → `.output/`) |
-| `pnpm start` | Run the build output (`node .output/server/index.mjs`) |
+| `pnpm build` | Production build (Cloudflare Worker → `dist/server/` + `dist/client/`) |
+| `pnpm start` | Preview the production build locally (`vite preview`) |
 | `pnpm verify` | Self-check loop: `build → check-types → lint → test`; must be fully green |
 | `pnpm check-types` / `pnpm lint` / `pnpm format` / `pnpm test` | Individual steps |
 
@@ -63,6 +63,4 @@ Use Nitro's Cloudflare preset:
 NITRO_PRESET=cloudflare_module pnpm build
 ```
 
-This emits a Cloudflare Workers module build; add a `wrangler.jsonc` and run `wrangler deploy`. Nitro supports several CF presets (`cloudflare_module` / `cloudflare-pages` / …); pick by target platform (see [Nitro deploy providers](https://nitro.build/deploy), [TanStack Start hosting](https://tanstack.com/start/latest/docs/framework/react/overview)).
-
-> Alternative (official CF path): Cloudflare currently recommends `@cloudflare/vite-plugin` + `wrangler.jsonc` (`main: "@tanstack/react-start/server-entry"`) rather than the Nitro preset. To take that path, replace the `nitro()` plugin in `vite.config.ts` with `cloudflare()` (placed before `tanstackStart()`), and install `@cloudflare/vite-plugin` + `wrangler`. See the [Cloudflare × TanStack Start docs](https://developers.cloudflare.com/workers/framework-guides/web-apps/tanstack-start/). This template defaults to the Nitro preset path (fewer dependencies).
+This template uses Cloudflare's official TanStack Start path: `@cloudflare/vite-plugin` (`cloudflare({ viteEnvironment: { name: "ssr" } })` before `tanstackStart()` in `vite.config.ts`) with `wrangler.jsonc` (`main: "@tanstack/react-start/server-entry"`). Dev runs the SSR environment inside workerd, so server code reads bindings via `import { env } from "cloudflare:workers"` — identical in dev and production. `pnpm build` emits a wrangler-deployable Worker under `dist/` (`dist/server/index.js` + `dist/server/wrangler.json` + static assets in `dist/client/`). See the [Cloudflare × TanStack Start docs](https://developers.cloudflare.com/workers/framework-guides/web-apps/tanstack-start/).

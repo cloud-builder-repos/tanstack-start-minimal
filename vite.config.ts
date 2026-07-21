@@ -1,7 +1,7 @@
+import { cloudflare } from "@cloudflare/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
-import { nitro } from "nitro/vite";
 import { defineConfig } from "vite";
 
 export default defineConfig({
@@ -13,11 +13,12 @@ export default defineConfig({
   },
   plugins: [
     tailwindcss(),
-    // tanstackStart wires file-based routing + SSR; nitro provides the
-    // deployable server (Node output by default; preset is switchable, see
-    // README "Deployment"). viteReact must come after tanstackStart.
+    // Official Cloudflare path (developers.cloudflare.com -> TanStack Start):
+    // dev runs the SSR environment inside workerd (bindings via
+    // `cloudflare:workers` -- identical in dev and production); build emits a
+    // wrangler-deployable Worker. viteReact must come after tanstackStart.
+    cloudflare({ viteEnvironment: { name: "ssr" } }),
     tanstackStart(),
-    nitro(),
     viteReact(),
   ],
 });
