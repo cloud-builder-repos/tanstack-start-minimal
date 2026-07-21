@@ -61,7 +61,7 @@ public/              # Static assets (robots.txt, etc.), served at their path
 Pick by scenario, top priority first:
 
 1. **Pages → file-based routes**: add a file under `src/routes/` following TanStack Router conventions (`index.tsx` = `/`, `about.tsx` = `/about`, `$param` = dynamic segment, `_layout/` = layout group). A new page = a new file + `createFileRoute("<path>")({ component, loader? })`. `routeTree.gen.ts` is updated by the build — **do not hand-write it**.
-2. **Logic that must run on the server (files / secrets / backend calls) → server function**: put it in `src/server/<name>.ts` with `createServerFn({ method }).inputValidator(fn).handler(fn)` (see `src/server/hello.ts`). Call it from a route `loader` for SSR data fetching (see `src/routes/index.tsx`), or from a client event. **Do not hand-write fetch to call your own backend** — a server function is same-origin RPC.
+2. **Logic that must run on the server (files / secrets / backend calls) → server function**: put it in `src/server/<name>.ts` with `createServerFn({ method }).validator(fn).handler(fn)` (see `src/server/hello.ts`). Call it from a route `loader` for SSR data fetching (see `src/routes/index.tsx`), or from a client event. **Do not hand-write fetch to call your own backend** — a server function is same-origin RPC.
 3. **Endpoints that must control the raw Request/Response (webhooks, third-party callbacks) → API route**: use `createFileRoute`'s `server.handlers` (GET/POST/…) under `src/routes/`. Not needed for the default case — prefer the first two.
 
 ## Component & styling conventions

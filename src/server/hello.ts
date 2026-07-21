@@ -7,7 +7,7 @@ import { formatGreeting } from "../lib/greeting";
  * same-origin RPC boundary. Add new ones as `createServerFn(...).handler(...)`.
  */
 export const getGreeting = createServerFn({ method: "GET" })
-  .inputValidator((name: string) => name)
+  .validator((name: string) => name)
   .handler(({ data }) => {
     return { message: formatGreeting(data), at: new Date().toISOString() };
   });
