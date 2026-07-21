@@ -4,7 +4,7 @@ import { cloudflare } from "@cloudflare/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
-import { defineConfig, type Plugin } from "vite";
+import { defineConfig, type Plugin, lazyPlugins } from "vite-plus";
 
 /**
  * Build-only: stage the platform deploy contract (`.openai/hosting.json` +
@@ -26,13 +26,19 @@ function stagePlatformArtifacts(): Plugin {
 }
 
 export default defineConfig({
+  fmt: {},
+  lint: {
+    jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
+    rules: { "vite-plus/prefer-vite-plus-imports": "error" },
+    options: { typeAware: true, typeCheck: true },
+  },
   server: {
     port: 3000,
   },
   resolve: {
     tsconfigPaths: true,
   },
-  plugins: [
+  plugins: lazyPlugins(() => [
     tailwindcss(),
     // Official Cloudflare path (developers.cloudflare.com -> TanStack Start):
     // dev runs the SSR environment inside workerd (bindings via
@@ -42,5 +48,5 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
     stagePlatformArtifacts(),
-  ],
+  ]),
 });

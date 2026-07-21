@@ -1,5 +1,5 @@
 import viteReact from "@vitejs/plugin-react";
-import { defineConfig } from "vitest/config";
+import { defineConfig } from "vite-plus";
 
 // Tests run against plain modules (pure logic / components), so we deliberately
 // do NOT load the tanstackStart/nitro plugins here — keeps the test runtime

@@ -2,29 +2,40 @@
 
 A minimal **TanStack Start** frontend template (SSR + server functions). The golden base for every end-user project of the AI site-builder product: a single app, a single `package.json`, minimal dependencies — **no auth, no database, not a monorepo**.
 
-Stack: TypeScript (strict) · Tailwind CSS v4 · Vite · Nitro · Biome (lint + format) · Vitest · Bun.
+Stack: TypeScript (strict) · Tailwind CSS v4 · Nitro · shadcn/ui · **[Vite+](https://viteplus.dev)** (the `vp` toolchain — Vite + Rolldown, Vitest, Oxlint, Oxfmt) on Bun.
 
 AI agents: read [`AGENTS.md`](./AGENTS.md) first.
 
 ## Getting started
 
+Install the Vite+ CLI once (it manages the package manager and Node version for you):
+
 ```bash
-bun install
-bun run dev        # http://localhost:3000
+curl -fsSL https://vite.plus | bash   # macOS / Linux
+# Windows (PowerShell): irm https://vite.plus/ps1 | iex
+```
+
+Then, in the project:
+
+```bash
+vp install
+vp dev        # http://localhost:3000
 ```
 
 ## Scripts
 
-Invoke scripts with `bun run <script>` — plain `bun build` / `bun test` run Bun's own bundler / test runner, not these scripts.
+`vp` is the entry point for everything. The `package.json` scripts wrap it, so `bun run <script>` works too.
 
-| Command | Purpose |
-|---|---|
-| `bun run dev` | Local dev (Vite + Nitro) |
-| `bun run build` | Production build (Cloudflare Worker → `dist/server/` + `dist/client/`) |
-| `bun run start` | Preview the production build locally (`vite preview`) |
-| `bun run check-types` / `bun run lint` / `bun run format` / `bun run test` | Quality-gate steps |
+| Command              | Purpose                                                                |
+| -------------------- | ---------------------------------------------------------------------- |
+| `vp dev`             | Local dev (Vite + Nitro)                                               |
+| `vp build`           | Production build (Cloudflare Worker → `dist/server/` + `dist/client/`) |
+| `vp preview`         | Preview the production build locally                                   |
+| `vp check`           | Quality gate: format + lint + type-check                               |
+| `vp test run`        | Run tests once (Vitest)                                                |
+| `vp lint` / `vp fmt` | Lint (Oxlint) / format (Oxfmt) individually                            |
 
-> `check-types` (tsc) needs `src/routeTree.gen.ts`, which the dev server and `build` generate. Keep `bun run dev` running so `tsc` does not falsely fail on a missing generated file.
+> `vp check`'s type-checker needs `src/routeTree.gen.ts`, which the dev server and `build` generate. Keep `vp dev` running so it does not falsely fail on a missing generated file.
 
 ## Project structure
 
@@ -49,19 +60,19 @@ Hosting is provided by **Nitro**, which can switch presets to emit output for di
 ### Vercel
 
 ```bash
-NITRO_PRESET=vercel bun run build
+NITRO_PRESET=vercel vp build
 ```
 
 Output is in Vercel [Build Output API](https://vercel.com/docs/build-output-api) format: `.vercel/output/` (`config.json` + `functions/__server.func/` + `static/`).
 
-On Vercel you **usually don't need to set `NITRO_PRESET` manually**: in the Vercel build environment Nitro auto-detects and applies the `vercel` preset (see the [Vercel × TanStack Start docs](https://vercel.com/docs/frameworks/full-stack/tanstack-start)). Import the repo into Vercel and use the default `bun run build`. Set the variable manually only when reproducing the production output structure locally.
+On Vercel you **usually don't need to set `NITRO_PRESET` manually**: in the Vercel build environment Nitro auto-detects and applies the `vercel` preset (see the [Vercel × TanStack Start docs](https://vercel.com/docs/frameworks/full-stack/tanstack-start)). Import the repo into Vercel and use the default `vp build`. Set the variable manually only when reproducing the production output structure locally.
 
 ### Cloudflare
 
 Use Nitro's Cloudflare preset:
 
 ```bash
-NITRO_PRESET=cloudflare_module bun run build
+NITRO_PRESET=cloudflare_module vp build
 ```
 
-This template uses Cloudflare's official TanStack Start path: `@cloudflare/vite-plugin` (`cloudflare({ viteEnvironment: { name: "ssr" } })` before `tanstackStart()` in `vite.config.ts`) with `wrangler.jsonc` (`main: "@tanstack/react-start/server-entry"`). Dev runs the SSR environment inside workerd, so server code reads bindings via `import { env } from "cloudflare:workers"` — identical in dev and production. `bun run build` emits a wrangler-deployable Worker under `dist/` (`dist/server/index.js` + `dist/server/wrangler.json` + static assets in `dist/client/`). See the [Cloudflare × TanStack Start docs](https://developers.cloudflare.com/workers/framework-guides/web-apps/tanstack-start/).
+This template uses Cloudflare's official TanStack Start path: `@cloudflare/vite-plugin` (`cloudflare({ viteEnvironment: { name: "ssr" } })` before `tanstackStart()` in `vite.config.ts`) with `wrangler.jsonc` (`main: "@tanstack/react-start/server-entry"`). Dev runs the SSR environment inside workerd, so server code reads bindings via `import { env } from "cloudflare:workers"` — identical in dev and production. `vp build` emits a wrangler-deployable Worker under `dist/` (`dist/server/index.js` + `dist/server/wrangler.json` + static assets in `dist/client/`). See the [Cloudflare × TanStack Start docs](https://developers.cloudflare.com/workers/framework-guides/web-apps/tanstack-start/).
