@@ -10,7 +10,6 @@
     "lint": "biome check .",
     "format": "biome check --write .",
     "test": "vitest run",
-    "verify": "pnpm build && pnpm check-types && pnpm lint && pnpm test",
     "cf-typegen": "wrangler types"
   },
   "packageManager": "pnpm@11.9.0",
