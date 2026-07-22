@@ -33,6 +33,7 @@ export default defineConfig({
     options: { typeAware: true, typeCheck: true },
   },
   server: {
+    host: true,
     port: 3000,
     allowedHosts: true,
   },
