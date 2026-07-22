@@ -5,7 +5,10 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig, type Plugin, lazyPlugins } from "vite-plus";
-import { gateEnabledFromEnv, hmrGate } from "@unseal-network/vite-plugin-hmr-gate";
+// Vendored (see vendor/vite-plugin-hmr-gate/README.md): the published package
+// lives on GitHub Packages, which needs a token even when public — which the
+// E2B bake can't supply without baking a secret. The dist is zero-dependency.
+import { gateEnabledFromEnv, hmrGate } from "./vendor/vite-plugin-hmr-gate/index.mjs";
 
 /**
  * Build-only: stage the platform deploy contract (`.openai/hosting.json` +
