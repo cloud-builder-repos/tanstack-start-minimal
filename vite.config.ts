@@ -5,6 +5,7 @@ import tailwindcss from "@tailwindcss/vite";
 import { tanstackStart } from "@tanstack/react-start/plugin/vite";
 import viteReact from "@vitejs/plugin-react";
 import { defineConfig, type Plugin, lazyPlugins } from "vite-plus";
+import { gateEnabledFromEnv, hmrGate } from "@unseal-network/vite-plugin-hmr-gate";
 
 /**
  * Build-only: stage the platform deploy contract (`.openai/hosting.json` +
@@ -36,6 +37,13 @@ export default defineConfig({
     host: true,
     port: 3000,
     allowedHosts: true,
+    // Preview-supervision prevention layer (sandbox only, paired with the
+    // hmrGate() plugin below): debounce the file watcher so chokidar fires on
+    // write-stable files, not on every intermediate byte of an agent edit.
+    // Off in local dev so watch behavior matches native vite. See ADR 0003.
+    ...(gateEnabledFromEnv() && {
+      watch: { awaitWriteFinish: { stabilityThreshold: 1000, pollInterval: 100 } },
+    }),
   },
   resolve: {
     tsconfigPaths: true,
@@ -50,5 +58,8 @@ export default defineConfig({
     tanstackStart(),
     viteReact(),
     stagePlatformArtifacts(),
+    // Preview-supervision HMR gate (sandbox only): holds file-watcher events
+    // during an agent edit and flushes once at turn end via POST /__hmr_flush.
+    hmrGate(),
   ]),
 });
