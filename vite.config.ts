@@ -26,6 +26,5 @@ export default defineConfig(tanstackDefineConfig({
     // `cloudflare:workers` -- identical in dev and production); build emits a
     // wrangler-deployable Worker. viteReact must come after tanstackStart.
     cloudflare({ viteEnvironment: { name: "ssr" } }),
-    stagePlatformArtifacts(),
   ]),
 }));
