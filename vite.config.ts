@@ -1,28 +1,8 @@
-import { cpSync, existsSync } from "node:fs";
-import path from "node:path";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig, type Plugin, lazyPlugins } from "vite-plus";
 import { defineConfig as tanstackDefineConfig } from "@unseal-ai/vite-tanstack-config";
 
-/**
- * Build-only: stage the platform deploy contract (`.openai/hosting.json` +
- * `.openai/drizzle/*.sql`, written when a database is added) into the build
- * output, so the artifact is self-contained for the platform's deploy step.
- */
-function stagePlatformArtifacts(): Plugin {
-  return {
-    name: "stage-platform-artifacts",
-    apply: "build",
-    closeBundle() {
-      const from = path.resolve(process.cwd(), ".openai");
-      const to = path.resolve(process.cwd(), "dist/.openai");
-      if (existsSync(from) && existsSync(path.resolve(process.cwd(), "dist"))) {
-        cpSync(from, to, { recursive: true });
-      }
-    },
-  };
-}
 
 export default defineConfig(tanstackDefineConfig({
   fmt: {},

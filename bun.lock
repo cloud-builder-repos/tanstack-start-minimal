@@ -25,7 +25,7 @@
         "@types/node": "^26.1.1",
         "@types/react": "^19.2.17",
         "@types/react-dom": "^19.2.3",
-        "@unseal-ai/vite-tanstack-config": "^0.1.1",
+        "@unseal-ai/vite-tanstack-config": "0.1.2",
         "@vitejs/plugin-react": "^6.0.3",
         "typescript": "^7.0.2",
         "vite": "npm:@voidzero-dev/vite-plus-core@0.2.5",
@@ -548,9 +548,9 @@
 
     "@typescript/typescript-win32-x64": ["@typescript/typescript-win32-x64@7.0.2", "", { "os": "win32", "cpu": "x64" }, "sha512-0BQ3HkAHHlKLSp1qRvf3SUhGpGsDuhB/jgFw75guyqbxJqEaS0Cw/VFO8i2nHglJUzQCRtMMR/IBAKE3ETMC4g=="],
 
-    "@unseal-ai/vite-plugin-hmr-gate": ["@unseal-ai/vite-plugin-hmr-gate@0.1.1", "", { "peerDependencies": { "vite": "*" } }, "sha512-UmSrETJODm2n4XE5shpBzhaf+L5BrtUUqd5kBZ+6UYQ51m/sUWTGuqSEv3qUZhz6Bri5GZVxbzVkDn2M7HKycg=="],
+    "@unseal-ai/vite-plugin-hmr-gate": ["@unseal-ai/vite-plugin-hmr-gate@0.1.2", "", { "peerDependencies": { "vite": "*" } }, "sha512-wAiBjECGocyCfLdt/iH1KWkUSSyobiwFiCnA1OmSeBlP6/1JBEqCi7OFnEOzqW1BDwK2OMAsTOq+WWAYmvYtng=="],
 
-    "@unseal-ai/vite-tanstack-config": ["@unseal-ai/vite-tanstack-config@0.1.1", "", { "dependencies": { "@unseal-ai/vite-plugin-hmr-gate": "^0.1.1" }, "peerDependencies": { "@tailwindcss/vite": ">=4.0.0", "@tanstack/react-start": ">=1.100.0", "@vitejs/plugin-react": ">=4.0.0", "nitro": ">=3.0.260603-beta", "vite": ">=5.0.0 <9.0.0", "vite-tsconfig-paths": ">=6.0.0" } }, "sha512-cimwbJfiS2xbGAyFTyMfXbxrFoeutqMwWQa58DVHTw8Fwc0T3ivQfu/5hpYxaWHYDgBzm/wYxlNYCu1DOD5J1g=="],
+    "@unseal-ai/vite-tanstack-config": ["@unseal-ai/vite-tanstack-config@0.1.2", "", { "dependencies": { "@unseal-ai/vite-plugin-hmr-gate": "^0.1.2" }, "peerDependencies": { "@tailwindcss/vite": ">=4.0.0", "@tanstack/react-start": ">=1.100.0", "@vitejs/plugin-react": ">=4.0.0", "nitro": ">=3.0.260603-beta", "vite": ">=5.0.0 <9.0.0", "vite-tsconfig-paths": ">=6.0.0" } }, "sha512-ZrJ4+0VlBfhxWTfH2vySMOLX9WuAyV9+TzMdplltGnbiSk0cUBD8Wh2skmUTvDgnKL+tNdlB5JBQgLi8Yq021Q=="],
 
     "@vitejs/plugin-react": ["@vitejs/plugin-react@6.0.3", "", { "dependencies": { "@rolldown/pluginutils": "^1.0.1" }, "peerDependencies": { "@rolldown/plugin-babel": "^0.1.7 || ^0.2.0", "babel-plugin-react-compiler": "^1.0.0", "vite": "^8.0.0" }, "optionalPeers": ["@rolldown/plugin-babel", "babel-plugin-react-compiler"] }, "sha512-vmFvco5/QuC2f9Oj+wTk0+9XeDFkHxSamwZKYc7MxYwKICfvUvlMhqKI0VuICPltGqh1neqBKDvO4kes1ya8vg=="],
 
