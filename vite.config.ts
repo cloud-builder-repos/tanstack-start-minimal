@@ -2,13 +2,8 @@ import { cpSync, existsSync } from "node:fs";
 import path from "node:path";
 import { cloudflare } from "@cloudflare/vite-plugin";
 import tailwindcss from "@tailwindcss/vite";
-import { tanstackStart } from "@tanstack/react-start/plugin/vite";
-import viteReact from "@vitejs/plugin-react";
 import { defineConfig, type Plugin, lazyPlugins } from "vite-plus";
-// Vendored (see vendor/vite-plugin-hmr-gate/README.md): the published package
-// lives on GitHub Packages, which needs a token even when public — which the
-// E2B bake can't supply without baking a secret. The dist is zero-dependency.
-import { gateEnabledFromEnv, hmrGate } from "./vendor/vite-plugin-hmr-gate/index.mjs";
+import { defineConfig as tanstackDefineConfig } from "@unseal-ai/vite-tanstack-config";
 
 /**
  * Build-only: stage the platform deploy contract (`.openai/hosting.json` +
@@ -29,7 +24,7 @@ function stagePlatformArtifacts(): Plugin {
   };
 }
 
-export default defineConfig({
+export default defineConfig(tanstackDefineConfig({
   fmt: {},
   lint: {
     jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
@@ -40,13 +35,6 @@ export default defineConfig({
     host: true,
     port: 3000,
     allowedHosts: true,
-    // Preview-supervision prevention layer (sandbox only, paired with the
-    // hmrGate() plugin below): debounce the file watcher so chokidar fires on
-    // write-stable files, not on every intermediate byte of an agent edit.
-    // Off in local dev so watch behavior matches native vite. See ADR 0003.
-    ...(gateEnabledFromEnv() && {
-      watch: { awaitWriteFinish: { stabilityThreshold: 1000, pollInterval: 100 } },
-    }),
   },
   resolve: {
     tsconfigPaths: true,
@@ -58,11 +46,6 @@ export default defineConfig({
     // `cloudflare:workers` -- identical in dev and production); build emits a
     // wrangler-deployable Worker. viteReact must come after tanstackStart.
     cloudflare({ viteEnvironment: { name: "ssr" } }),
-    tanstackStart(),
-    viteReact(),
     stagePlatformArtifacts(),
-    // Preview-supervision HMR gate (sandbox only): holds file-watcher events
-    // during an agent edit and flushes once at turn end via POST /__hmr_flush.
-    hmrGate(),
   ]),
-});
+}));
