@@ -3,7 +3,7 @@
   // environment in workerd from this file) and the platform deploy. Bindings
   // added on demand (e.g. a d1_databases entry when a database is added) are
   // emulated locally from here; the REAL resources are provisioned and bound
-  // by the platform at deploy from .openai/hosting.json.
+  // by the platform at deploy from .unseal-space/hosting.json.
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "app",
   "compatibility_date": "2025-05-01",
