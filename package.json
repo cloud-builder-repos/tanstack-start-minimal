@@ -33,13 +33,13 @@
     "@types/react-dom": "^19.2.3",
     "@unseal-ai/vite-tanstack-config": "^0.2.0",
     "typescript": "^7.0.2",
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.5",
-    "vite-plus": "0.2.5",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.6",
+    "vite-plus": "0.2.6",
     "vitest": "4.1.10",
     "wrangler": "^4.112.0"
   },
   "overrides": {
-    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.5",
+    "vite": "npm:@voidzero-dev/vite-plus-core@0.2.6",
     "vitest": "4.1.10"
   },
   "packageManager": "bun@1.3.14"
