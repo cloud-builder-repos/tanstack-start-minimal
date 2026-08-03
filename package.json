@@ -6,9 +6,6 @@
     "dev": "vp dev",
     "build": "vp build",
     "start": "vp preview",
-    "check": "vp check",
-    "lint": "vp lint",
-    "format": "vp fmt",
     "test": "vp test run",
     "cf-typegen": "wrangler types"
   },
